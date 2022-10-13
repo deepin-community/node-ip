@@ -1,0 +1,83 @@
+Description: fix Buffer() usage
+Author: Xavier Guimard <yadd@debian.org>
+Forwarded: no
+Last-Update: 2020-03-01
+
+--- a/README.md
++++ b/README.md
+@@ -25,7 +25,7 @@
+ ip.address() // my ip address
+ ip.isEqual('::1', '::0:1'); // true
+ ip.toBuffer('127.0.0.1') // Buffer([127, 0, 0, 1])
+-ip.toString(new Buffer([127, 0, 0, 1])) // 127.0.0.1
++ip.toString(new Buffer.from([127, 0, 0, 1])) // 127.0.0.1
+ ip.fromPrefixLen(24) // 255.255.255.0
+ ip.mask('192.168.1.134', '255.255.255.0') // 192.168.1.0
+ ip.cidr('192.168.1.134/26') // 192.168.1.128
+@@ -36,7 +36,7 @@
+ ip.isV6Format('::ffff:127.0.0.1'); // true
+ 
+ // operate on buffers in-place
+-var buf = new Buffer(128);
++var buf = new Buffer.alloc(128);
+ var offset = 64;
+ ip.toBuffer('127.0.0.1', buf, offset);  // [127, 0, 0, 1] at offset 64
+ ip.toString(buf, offset, 4);            // '127.0.0.1'
+--- a/lib/ip.js
++++ b/lib/ip.js
+@@ -10,7 +10,7 @@
+   var result;
+ 
+   if (this.isV4Format(ip)) {
+-    result = buff || new Buffer(offset + 4);
++    result = buff || new Buffer.alloc(offset + 4);
+     ip.split(/\./g).map(function(byte) {
+       result[offset++] = parseInt(byte, 10) & 0xff;
+     });
+@@ -45,7 +45,7 @@
+       sections.splice.apply(sections, argv);
+     }
+ 
+-    result = buff || new Buffer(offset + 16);
++    result = buff || new Buffer.alloc(offset + 16);
+     for (i = 0; i < sections.length; i++) {
+       var word = parseInt(sections[i], 16);
+       result[offset++] = (word >> 8) & 0xff;
+@@ -110,7 +110,7 @@
+   if (family === 'ipv6') {
+     len = 16;
+   }
+-  var buff = new Buffer(len);
++  var buff = new Buffer.alloc(len);
+ 
+   for (var i = 0, n = buff.length; i < n; ++i) {
+     var bits = 8;
+@@ -129,7 +129,7 @@
+   addr = ip.toBuffer(addr);
+   mask = ip.toBuffer(mask);
+ 
+-  var result = new Buffer(Math.max(addr.length, mask.length));
++  var result = new Buffer.alloc(Math.max(addr.length, mask.length));
+ 
+   var i = 0;
+   // Same protocol - do bitwise and
+--- a/test/api-test.js
++++ b/test/api-test.js
+@@ -14,7 +14,7 @@
+     });
+ 
+     it('should convert to buffer IPv4 address in-place', function() {
+-      var buf = new Buffer(128);
++      var buf = new Buffer.alloc(128);
+       var offset = 64;
+       ip.toBuffer('127.0.0.1', buf, offset);
+       assert.equal(buf.toString('hex', offset, offset + 4), '7f000001');
+@@ -30,7 +30,7 @@
+     });
+ 
+     it('should convert to buffer IPv6 address in-place', function() {
+-      var buf = new Buffer(128);
++      var buf = new Buffer.alloc(128);
+       var offset = 64;
+       ip.toBuffer('::1', buf, offset);
+       assert(/(00){15,15}01/.test(buf.toString('hex', offset, offset + 16)));

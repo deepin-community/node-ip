@@ -1,0 +1,27 @@
+Source: node-ip
+Section: javascript
+Priority: optional
+Maintainer: Debian Javascript Maintainers <pkg-javascript-devel@lists.alioth.debian.org>
+Uploaders: suman <suman@protonmail.com>
+Build-Depends: debhelper-compat (= 12)
+ , mocha
+ , pkg-js-tools (>= 0.9.20~)
+Standards-Version: 4.5.0
+Vcs-Browser: https://salsa.debian.org/js-team/node-ip
+Vcs-Git: https://salsa.debian.org/js-team/node-ip.git
+Homepage: https://github.com/indutny/node-ip
+Testsuite: autopkgtest-pkg-nodejs
+Rules-Requires-Root: no
+
+Package: node-ip
+Architecture: all
+Depends: ${misc:Depends}
+ , nodejs
+Description: IP address utilities for node.js
+ IP utility in node.js helps one with IP related queries. This module
+ helps in quickly accessing ip address.
+ .
+ Ip utility helps fetch results on ip address, comapre ip address,
+ validate ip address, range checking, subnet information etc.
+ .
+ Node.js is an event-based server-side JavaScript engine.
