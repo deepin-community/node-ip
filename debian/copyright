@@ -2,6 +2,7 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: ip
 Upstream-Contact: https://github.com/indutny/node-ip/issues
 Source: https://github.com/indutny/node-ip
+ https://registry.npmjs.org/@types/ip
 
 Files: *
 Copyright: 2012 Fedor Indutny <fedor@indutny.com>
@@ -9,7 +10,11 @@ License: Expat
 
 Files: debian/*
 Copyright: 2017 suman <suman@protonmail.com>
- 2020 Xavier Guimard <yadd@debian.org>
+ 2020 Yadd <yadd@debian.org>
+License: Expat
+
+Files: types-*/*
+Copyright: Microsoft Corporation
 License: Expat
 
 License: Expat

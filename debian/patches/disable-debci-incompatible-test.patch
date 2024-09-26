@@ -2,24 +2,30 @@ Description: Disable debci incompatible test
 Author: Xavier Guimard <yadd@debian.org>
 Bug-Debian: https://bugs.debian.org/918252
 Forwarded: no
-Last-Update: 2019-01-05
+Last-Update: 2022-07-27
 
 --- a/test/api-test.js
 +++ b/test/api-test.js
-@@ -352,11 +352,11 @@
+@@ -416,22 +416,6 @@
    });
  
-   describe('address() method', function() {
--    describe('undefined', function() {
--      it('should respond with a private ip', function() {
+   describe('address() method', () => {
+-    describe('undefined', () => {
+-      it('should respond with a private ip', () => {
 -        assert.ok(ip.isPrivate(ip.address()));
 -      });
 -    });
-+    //describe('undefined', function() {
-+    //  it('should respond with a private ip', function() {
-+    //    assert.ok(ip.isPrivate(ip.address()));
-+    //  });
-+    //});
+-
+-    describe('private', () => {
+-      [undefined, 'ipv4', 'ipv6'].forEach((family) => {
+-        describe(family || 'undefined', () => {
+-          it('should respond with a private ip', () => {
+-            assert.ok(ip.isPrivate(ip.address('private', family)));
+-          });
+-        });
+-      });
+-    });
+-
+     const interfaces = os.networkInterfaces();
  
-     describe('private', function() {
-       [ undefined, 'ipv4', 'ipv6' ].forEach(function(family) {
+     Object.keys(interfaces).forEach((nic) => {

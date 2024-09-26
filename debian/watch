@@ -1,5 +1,10 @@
-version=3
+version=4
 opts=\
-dversionmangle=s/\+(debian|dfsg|ds|deb)(\.\d+)?$//,\
-filenamemangle=s/.*\/v?([\d\.-]+)\.tar\.gz/node-ip-$1.tar.gz/ \
- https://github.com/indutny/node-ip/tags .*/archive/v?([\d\.]+).tar.gz
+dversionmangle=auto,\
+filenamemangle=s/.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-ip-$1/ \
+ https://github.com/indutny/node-ip/tags .*/archive/.*/v?([\d\.]+).tar.gz group
+
+# It is not recommended use npmregistry. Please investigate more.
+# Take a look at https://wiki.debian.org/debian/watch/
+opts="searchmode=plain,component=types-ip,ctype=nodejs,pgpmode=none,filenamemangle=s/^.*?(\d[\d\.-]*@ARCHIVE_EXT@)/node-types-ip-$1/" \
+ https://registry.npmjs.org/@types/ip https://registry.npmjs.org/@types/ip/-/ip-([\d\.]+)@ARCHIVE_EXT@ group
